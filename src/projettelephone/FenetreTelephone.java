@@ -13,14 +13,13 @@ package projettelephone;
 
 
 public class FenetreTelephone extends javax.swing.JFrame {
-    private String numero;
     private AppelEntrant appelEntrant = new AppelEntrant();    
     private AppelSortant appelSortant = new AppelSortant();
-    
+    private AppelEnCours appelEnCoursTelephone1 = new AppelEnCours();
+    private AppelEnCours appelEnCoursTelephone2 = new AppelEnCours();
 
    public FenetreTelephone() {
        initComponents();
-       
         ///throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
@@ -332,6 +331,7 @@ public class FenetreTelephone extends javax.swing.JFrame {
             if (evt.getSource() == CreerTelephone.telephone1) {
                 appelEntrant.setNumeroEntrant("Appel Entrant" + CreerTelephone.telephone2.getTitle().substring(5));
                 appelSortant.setNumeroSortant("Appel Sortant" + CreerTelephone.telephone1.getTitle().substring(5));
+                appelEnCoursTelephone1.setNumero(CreerTelephone.telephone2.getTitle().substring(5));
                 CreerTelephone.telephone2.setContentPane(appelSortant);
                 CreerTelephone.telephone2.setVisible(true);
                 CreerTelephone.telephone1.setContentPane(appelEntrant);
@@ -339,6 +339,7 @@ public class FenetreTelephone extends javax.swing.JFrame {
             } else {
                 appelEntrant.setNumeroEntrant("Appel Entrant" + CreerTelephone.telephone1.getTitle().substring(5));
                 appelSortant.setNumeroSortant("Appel Sortant" + CreerTelephone.telephone2.getTitle().substring(5));
+                appelEnCoursTelephone2.setNumero(CreerTelephone.telephone1.getTitle().substring(5));
                 CreerTelephone.telephone1.setContentPane(appelSortant);
                 CreerTelephone.telephone1.setVisible(true);
                 CreerTelephone.telephone2.setContentPane(appelEntrant);
