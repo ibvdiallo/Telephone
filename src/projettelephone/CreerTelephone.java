@@ -8,7 +8,7 @@ package projettelephone;
 import javax.swing.*;
 import javax.swing.JOptionPane;
 
-public class CreerTelephone extends javax.swing.JFrame implements IAppel {
+public class CreerTelephone extends javax.swing.JFrame {
     static public JFrame telephone1 = null, telephone2 = null;
     private AppelEntrant appelEntrant;    
     private AppelSortant appelSortant;
@@ -99,11 +99,6 @@ public class CreerTelephone extends javax.swing.JFrame implements IAppel {
         
     }//GEN-LAST:event_btnCreerPhoneActionPerformed
 
-    @Override
-    public void appeler() {
-        telephone1.setTitle("Appel Sortant" + telephone2.getTitle().substring(5));
-        telephone2.setTitle("Appel entrant" + telephone1.getTitle().substring(5));
-    }
    
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */

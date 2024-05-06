@@ -14,7 +14,6 @@ package projettelephone;
 
 public class FenetreTelephone extends javax.swing.JFrame {
     private String numero;
-    private IAppel interfaceAppel;
     private AppelEntrant appelEntrant = new AppelEntrant();    
     private AppelSortant appelSortant = new AppelSortant();
     
@@ -23,19 +22,6 @@ public class FenetreTelephone extends javax.swing.JFrame {
        initComponents();
        
         ///throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-   
-    //Declaration des variables globales
-    String resultatFinal = "";
-
-   
-    
-    
-    //declaration de la methode getchiffre
-    private void getChiffre(int nb){
-        resultatFinal+=nb;
-        resultat.setText(resultatFinal);
     }
     
  
@@ -336,46 +322,44 @@ public class FenetreTelephone extends javax.swing.JFrame {
 
     private void btnEffacerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEffacerActionPerformed
         // TODO add your handling code here:
-        resultat.setText(resultatFinal.substring(0,resultatFinal.length() -1));
-        resultatFinal=(resultatFinal.substring(0,resultatFinal.length() -1));
+        this.resultat.setText("");
     }//GEN-LAST:event_btnEffacerActionPerformed
 
     private void btnAppelerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAppelerActionPerformed
         // TODO add your handling code here:
         //interfaceAppel.appeler();
-        if (evt.getSource() == CreerTelephone.telephone1) {
-            appelEntrant.setNumeroEntrant("Appel Entrant" + CreerTelephone.telephone2.getTitle().substring(5));
-            appelSortant.setNumeroSortant("Appel Sortant" + CreerTelephone.telephone1.getTitle().substring(5));
-            CreerTelephone.telephone2.setContentPane(appelSortant);
-            CreerTelephone.telephone2.setVisible(true);
-            CreerTelephone.telephone1.setContentPane(appelEntrant);
-            CreerTelephone.telephone1.setVisible(true);
-        } else {
-            appelEntrant.setNumeroEntrant("Appel Entrant" + CreerTelephone.telephone1.getTitle().substring(5));
-            appelSortant.setNumeroSortant("Appel Sortant" + CreerTelephone.telephone2.getTitle().substring(5));
-            CreerTelephone.telephone1.setContentPane(appelSortant);
-            CreerTelephone.telephone1.setVisible(true);
-            CreerTelephone.telephone2.setContentPane(appelEntrant);
-            CreerTelephone.telephone2.setVisible(true);
+        if (!resultat.getText().isEmpty()) {
+            if (evt.getSource() == CreerTelephone.telephone1) {
+                appelEntrant.setNumeroEntrant("Appel Entrant" + CreerTelephone.telephone2.getTitle().substring(5));
+                appelSortant.setNumeroSortant("Appel Sortant" + CreerTelephone.telephone1.getTitle().substring(5));
+                CreerTelephone.telephone2.setContentPane(appelSortant);
+                CreerTelephone.telephone2.setVisible(true);
+                CreerTelephone.telephone1.setContentPane(appelEntrant);
+                CreerTelephone.telephone1.setVisible(true);
+            } else {
+                appelEntrant.setNumeroEntrant("Appel Entrant" + CreerTelephone.telephone1.getTitle().substring(5));
+                appelSortant.setNumeroSortant("Appel Sortant" + CreerTelephone.telephone2.getTitle().substring(5));
+                CreerTelephone.telephone1.setContentPane(appelSortant);
+                CreerTelephone.telephone1.setVisible(true);
+                CreerTelephone.telephone2.setContentPane(appelEntrant);
+                CreerTelephone.telephone2.setVisible(true);
+            }
         }
-        
     }//GEN-LAST:event_btnAppelerActionPerformed
 
     private void nguessActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nguessActionPerformed
         // TODO add your handling code here:
-        this.resultat.setText(this.resultat.getText()+this.nguess.getText());
-        resultatFinal = this.resultat.getText();
+        this.resultat.setText(this.resultat.getText() + nguess.getText());
     }//GEN-LAST:event_nguessActionPerformed
 
     private void n0ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_n0ActionPerformed
         // TODO add your handling code here:
-        getChiffre(0);
+        this.resultat.setText(this.resultat.getText() + n0.getText());
     }//GEN-LAST:event_n0ActionPerformed
 
     private void etoileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_etoileActionPerformed
         // TODO add your handling code here:
-        this.resultat.setText(this.resultat.getText()+this.etoile.getText());
-        resultatFinal = this.resultat.getText();
+        this.resultat.setText(this.resultat.getText() + etoile.getText());
     }//GEN-LAST:event_etoileActionPerformed
 
     private void etoileMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_etoileMouseClicked
@@ -384,47 +368,47 @@ public class FenetreTelephone extends javax.swing.JFrame {
 
     private void n9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_n9ActionPerformed
         // TODO add your handling code here:
-        getChiffre(9);
+        this.resultat.setText(this.resultat.getText() + n9.getText());
     }//GEN-LAST:event_n9ActionPerformed
 
     private void n8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_n8ActionPerformed
         // TODO add your handling code here:
-        getChiffre(8);
+        this.resultat.setText(this.resultat.getText() + n8.getText());
     }//GEN-LAST:event_n8ActionPerformed
 
     private void n7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_n7ActionPerformed
         // TODO add your handling code here:
-        getChiffre(7);
+        this.resultat.setText(this.resultat.getText() + n7.getText());
     }//GEN-LAST:event_n7ActionPerformed
 
     private void n6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_n6ActionPerformed
         // TODO add your handling code here:
-        getChiffre(6);
+        this.resultat.setText(this.resultat.getText() + n6.getText());
     }//GEN-LAST:event_n6ActionPerformed
 
     private void n5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_n5ActionPerformed
         // TODO add your handling code here:
-        getChiffre(5);
+        this.resultat.setText(this.resultat.getText() + n5.getText());
     }//GEN-LAST:event_n5ActionPerformed
 
     private void n4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_n4ActionPerformed
         // TODO add your handling code here:
-        getChiffre(4);
+        this.resultat.setText(this.resultat.getText() + n4.getText());
     }//GEN-LAST:event_n4ActionPerformed
 
     private void n3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_n3ActionPerformed
         // TODO add your handling code here:
-        getChiffre(3);
+        this.resultat.setText(this.resultat.getText() + n3.getText());
     }//GEN-LAST:event_n3ActionPerformed
 
     private void n2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_n2ActionPerformed
         // TODO add your handling code here:
-        getChiffre(2);
+        this.resultat.setText(this.resultat.getText() + n2.getText());
     }//GEN-LAST:event_n2ActionPerformed
 
     private void n1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_n1ActionPerformed
         // TODO add your handling code here:
-        getChiffre(1);
+        this.resultat.setText(this.resultat.getText() + n1.getText());
     }//GEN-LAST:event_n1ActionPerformed
 
     private void resultatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_resultatActionPerformed
@@ -452,7 +436,7 @@ public class FenetreTelephone extends javax.swing.JFrame {
     private javax.swing.JButton n8;
     private javax.swing.JButton n9;
     private javax.swing.JButton nguess;
-    public static javax.swing.JTextField resultat;
+    private javax.swing.JTextField resultat;
     // End of variables declaration//GEN-END:variables
 
    
