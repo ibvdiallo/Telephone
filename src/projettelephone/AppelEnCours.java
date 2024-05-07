@@ -5,12 +5,16 @@
  */
 package projettelephone;
 
+import javax.swing.JFrame;
+import javax.swing.SwingUtilities;
+
 /**
  *
  * @author ibrahim
  */
 public class AppelEnCours extends javax.swing.JPanel {
-
+    private IAppel listener;
+    
     /**
      * Creates new form AppelEnCours
      */
@@ -70,10 +74,15 @@ public class AppelEnCours extends javax.swing.JPanel {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
+        listener.onClickCouper(((JFrame) SwingUtilities.getWindowAncestor(this)).getTitle());
     }//GEN-LAST:event_jButton1ActionPerformed
 
     public void setNumero(String numero) {
         champNumero.setText(numero);
+    }
+    
+    public void setListener(IAppel listener) {
+        this.listener = listener;
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

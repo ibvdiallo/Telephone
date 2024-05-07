@@ -6,12 +6,16 @@
 package projettelephone;
 
 import javax.swing.*;
-import javax.swing.JOptionPane;
 
-public class CreerTelephone extends javax.swing.JFrame {
-    static public JFrame telephone1 = null, telephone2 = null;
-    private AppelEntrant appelEntrant;    
-    private AppelSortant appelSortant;
+public class CreerTelephone extends javax.swing.JFrame implements IAppel {
+    private JFrame telephone1 = null, telephone2 = null;
+    private AppelEntrant appelEntrant = new AppelEntrant();    
+    private AppelSortant appelSortant = new AppelSortant();
+    private AppelEnCours appelEnCours1;
+    private AppelEnCours appelEnCours2;
+    private JPanel paneParentTelephone1;
+    private JPanel paneParentTelephone2;
+    
     private String numero;
     
     public CreerTelephone() {
@@ -83,20 +87,23 @@ public class CreerTelephone extends javax.swing.JFrame {
         // TODO add your handling code here:
         if (telephone1 == null) {
             telephone1 = new FenetreTelephone();
+            FenetreTelephone.setListener(this);
             telephone1.setVisible(true);
+            paneParentTelephone1 = (JPanel) telephone1.getContentPane();
             this.numero=this.txtNumero.getText();
             telephone1.setTitle("Tel : " + this.numero);
         } else {
             if (telephone2 == null) {
                 telephone2 = new FenetreTelephone();
+                FenetreTelephone.setListener(this);
                 telephone2.setVisible(true);
+                paneParentTelephone2 = (JPanel) telephone2.getContentPane();
                 this.numero=this.txtNumero.getText();
                 telephone2.setTitle("Tel : " + this.numero);
             } else {
                 //JOptionPane.showMessageDialog(rootPane, evt);
             }
         }
-        
     }//GEN-LAST:event_btnCreerPhoneActionPerformed
 
    
@@ -138,4 +145,45 @@ public class CreerTelephone extends javax.swing.JFrame {
     private javax.swing.JTextField txtNumero;
     // End of variables declaration//GEN-END:variables
 
+    @Override
+    public void onClickDecrocher(String phoneSourceTitle) {
+        appelEnCours1 = new AppelEnCours();
+        appelEnCours2 = new AppelEnCours();
+
+        appelEnCours1.setListener(this);
+        appelEnCours2.setListener(this);
+        telephone1.setContentPane(appelEnCours1);
+        telephone2.setContentPane(appelEnCours2);
+        telephone1.setVisible(true);
+        telephone2.setVisible(true);
+    }
+
+    @Override
+    public void onClickCouper(String phoneSourceTitle) {
+        telephone1.setContentPane(paneParentTelephone1);
+        telephone2.setContentPane(paneParentTelephone2);
+    }
+
+    @Override
+    public void onClickAppeler(String phoneSourceTitle) {
+        if (telephone2.getTitle().equals(phoneSourceTitle)) {
+            appelEntrant.setNumeroEntrant("Appel Entrant" + telephone2.getTitle().substring(5));
+            appelSortant.setNumeroSortant("Appel Sortant" + telephone1.getTitle().substring(5));
+            appelEntrant.setListener(this);
+            appelSortant.setListener(this);
+            telephone2.setContentPane(appelSortant);
+            telephone2.setVisible(true);
+            telephone1.setContentPane(appelEntrant);
+            telephone1.setVisible(true);
+        } else {
+            appelEntrant.setNumeroEntrant("Appel Entrant" + telephone1.getTitle().substring(5));
+            appelSortant.setNumeroSortant("Appel Sortant" + telephone2.getTitle().substring(5));
+            appelEntrant.setListener(this);
+            appelSortant.setListener(this);
+            telephone1.setContentPane(appelSortant);
+            telephone1.setVisible(true);
+            telephone2.setContentPane(appelEntrant);
+            telephone2.setVisible(true);
+        }
+    }
 }

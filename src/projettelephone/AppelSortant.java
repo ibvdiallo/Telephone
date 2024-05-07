@@ -5,12 +5,16 @@
  */
 package projettelephone;
 
+import javax.swing.*;
+
+
 /**
  *
  * @author ibrahim
  */
 public class AppelSortant extends javax.swing.JPanel {
-
+    private IAppel listener;
+    
     /**
      * Creates new form AppelSortant
      */
@@ -32,6 +36,11 @@ public class AppelSortant extends javax.swing.JPanel {
 
         couper.setBackground(new java.awt.Color(255, 51, 51));
         couper.setText("couper");
+        couper.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                couperActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -58,8 +67,17 @@ public class AppelSortant extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    private void couperActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_couperActionPerformed
+        // TODO add your handling code here:
+        this.listener.onClickCouper(((JFrame) SwingUtilities.getWindowAncestor(this)).getTitle());
+    }//GEN-LAST:event_couperActionPerformed
+
     public void setNumeroSortant(String numero) {
         numeroSortant.setText(numero);
+    }
+    
+    public void setListener(IAppel listener) {
+        this.listener = listener;
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables

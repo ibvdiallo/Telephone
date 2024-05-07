@@ -5,6 +5,8 @@
  */
 package projettelephone;
 
+import javax.swing.JPanel;
+
 /**
  *
  * @author ibrahim
@@ -15,12 +17,10 @@ package projettelephone;
 public class FenetreTelephone extends javax.swing.JFrame {
     private AppelEntrant appelEntrant = new AppelEntrant();    
     private AppelSortant appelSortant = new AppelSortant();
-    private AppelEnCours appelEnCoursTelephone1 = new AppelEnCours();
-    private AppelEnCours appelEnCoursTelephone2 = new AppelEnCours();
+    private static IAppel listener;
 
-   public FenetreTelephone() {
+    public FenetreTelephone() {
        initComponents();
-        ///throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
  
@@ -328,23 +328,7 @@ public class FenetreTelephone extends javax.swing.JFrame {
         // TODO add your handling code here:
         //interfaceAppel.appeler();
         if (!resultat.getText().isEmpty()) {
-            if (evt.getSource() == CreerTelephone.telephone1) {
-                appelEntrant.setNumeroEntrant("Appel Entrant" + CreerTelephone.telephone2.getTitle().substring(5));
-                appelSortant.setNumeroSortant("Appel Sortant" + CreerTelephone.telephone1.getTitle().substring(5));
-                appelEnCoursTelephone1.setNumero(CreerTelephone.telephone2.getTitle().substring(5));
-                CreerTelephone.telephone2.setContentPane(appelSortant);
-                CreerTelephone.telephone2.setVisible(true);
-                CreerTelephone.telephone1.setContentPane(appelEntrant);
-                CreerTelephone.telephone1.setVisible(true);
-            } else {
-                appelEntrant.setNumeroEntrant("Appel Entrant" + CreerTelephone.telephone1.getTitle().substring(5));
-                appelSortant.setNumeroSortant("Appel Sortant" + CreerTelephone.telephone2.getTitle().substring(5));
-                appelEnCoursTelephone2.setNumero(CreerTelephone.telephone1.getTitle().substring(5));
-                CreerTelephone.telephone1.setContentPane(appelSortant);
-                CreerTelephone.telephone1.setVisible(true);
-                CreerTelephone.telephone2.setContentPane(appelEntrant);
-                CreerTelephone.telephone2.setVisible(true);
-            }
+            listener.onClickAppeler(this.getTitle());
         }
     }//GEN-LAST:event_btnAppelerActionPerformed
 
@@ -416,6 +400,9 @@ public class FenetreTelephone extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_resultatActionPerformed
 
+    public static void setListener(IAppel listener) {
+        FenetreTelephone.listener = listener;
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAppeler;
@@ -440,5 +427,4 @@ public class FenetreTelephone extends javax.swing.JFrame {
     private javax.swing.JTextField resultat;
     // End of variables declaration//GEN-END:variables
 
-   
 }

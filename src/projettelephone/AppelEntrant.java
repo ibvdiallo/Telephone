@@ -5,12 +5,16 @@
  */
 package projettelephone;
 
+import javax.swing.JFrame;
+import javax.swing.SwingUtilities;
+
 /**
  *
  * @author ibrahim
  */
 public class AppelEntrant extends javax.swing.JPanel {
-
+    private IAppel listener;
+    
     /**
      * Creates new form AppelEntrant
      */
@@ -41,6 +45,11 @@ public class AppelEntrant extends javax.swing.JPanel {
 
         repondre.setBackground(new java.awt.Color(102, 255, 0));
         repondre.setText("Repondre");
+        repondre.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                repondreActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -72,10 +81,20 @@ public class AppelEntrant extends javax.swing.JPanel {
 
     private void couperActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_couperActionPerformed
         // TODO add your handling code here:
+        this.listener.onClickCouper(((JFrame) SwingUtilities.getWindowAncestor(this)).getTitle());
     }//GEN-LAST:event_couperActionPerformed
+
+    private void repondreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_repondreActionPerformed
+        // TODO add your handling code here:
+        this.listener.onClickDecrocher(((JFrame) SwingUtilities.getWindowAncestor(this)).getTitle());
+    }//GEN-LAST:event_repondreActionPerformed
 
     public void setNumeroEntrant(String numero) {
         numeroEntrant.setText(numero);
+    }
+    
+    public void setListener(IAppel listener) {
+        this.listener = listener;
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
