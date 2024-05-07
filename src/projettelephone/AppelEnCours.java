@@ -81,10 +81,14 @@ public class AppelEnCours extends javax.swing.JPanel {
         champNumero.setText(numero);
     }
     
+    public void setTemps(String temps) {
+        champTemp.setText(temps);
+    }
+    
     public void setListener(IAppel listener) {
         this.listener = listener;
     }
-
+   
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel champNumero;
     private javax.swing.JLabel champTemp;

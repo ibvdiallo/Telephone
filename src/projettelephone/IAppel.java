@@ -15,4 +15,5 @@ public interface IAppel {
     public void onClickDecrocher(String phoneSourceTitle);
     public void onClickCouper(String phoneSourceTitle);
     public void onClickAppeler(String phoneSourceTitle);
+    public void onClickFermer(String phoneSourceTitle);
 }
