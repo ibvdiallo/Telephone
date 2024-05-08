@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <link rel="stylesheet" href="styl.css">
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <div class="d-flex container-fluid justify-content-end">
+        <div class="col-2 bg-primary" id="side_bar">
+
+        </div>
+        <div class="col-10  card" id="content">
+            <div class="card-header d-flex justify-content-between" >
+                <div class="d-flex">
+                    <button class="btn btn-sm mx-2 btn-primary" id="menu">Fermer</button>
+                    <h3 class="mx-2">Todo list</h3>
+                </div>
+                <div class="d-flex">
+                    <input class="form-control" type="text" id="tache" placeholder="votre tache">
+                    <button class="btn btn-primary btn-sm mx-2" id="btn-ajouter">Ajouter</button>
+                </div>
+            </div>
+
+            <div class="card-body bg-info">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Nom</th>
+                        <th>Action</th>
+                    </tr>
+                    </thead>
+                    <tbody id="liste_taches">
+
+                    </tbody>
+                </table>
+
+            </div>
+
+        </div>
+    </div>
+    <script src="script.js"></script>
+    <script src="tache.js"></script>
+</body>
+</html>

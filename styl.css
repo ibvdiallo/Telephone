@@ -1,0 +1,10 @@
+@import url('style.css');
+.container-fluid{
+    width: 100vw !important;
+    height: 100vh !important;
+    margin: 0;
+    padding: 0;
+}
+.card-header{
+    min-height: 49px;
+}
