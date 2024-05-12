@@ -35,6 +35,14 @@ public class AppelEnCours extends javax.swing.JPanel {
         jButton1 = new javax.swing.JButton();
         champNumero = new javax.swing.JLabel();
 
+        setBackground(new java.awt.Color(0, 0, 0));
+        setForeground(new java.awt.Color(255, 255, 255));
+
+        champTemp.setBackground(new java.awt.Color(0, 0, 0));
+        champTemp.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
+        champTemp.setForeground(new java.awt.Color(255, 255, 255));
+        champTemp.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+
         jButton1.setBackground(new java.awt.Color(255, 51, 0));
         jButton1.setText("Couper");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -42,6 +50,11 @@ public class AppelEnCours extends javax.swing.JPanel {
                 jButton1ActionPerformed(evt);
             }
         });
+
+        champNumero.setBackground(new java.awt.Color(0, 0, 0));
+        champNumero.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
+        champNumero.setForeground(new java.awt.Color(255, 255, 255));
+        champNumero.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -94,4 +107,8 @@ public class AppelEnCours extends javax.swing.JPanel {
     private javax.swing.JLabel champTemp;
     private javax.swing.JButton jButton1;
     // End of variables declaration//GEN-END:variables
+
+    void setHorizontalAlignment(int CENTER) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 }

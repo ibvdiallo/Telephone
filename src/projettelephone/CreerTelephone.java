@@ -5,10 +5,14 @@
  */
 package projettelephone;
 
+import java.awt.Color;
+import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
@@ -17,19 +21,29 @@ import java.util.TimerTask;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import javax.swing.*;
+import static javax.swing.WindowConstants.DISPOSE_ON_CLOSE;
 
 public class CreerTelephone extends javax.swing.JFrame implements IAppel {
     private JFrame telephone1 = null, telephone2 = null;
     private AppelEntrant appelEntrant = new AppelEntrant();    
     private AppelSortant appelSortant = new AppelSortant();
+    private InfoSortant infoSortant = new InfoSortant();
+    private InfoEntrant infoEntrant = new InfoEntrant();
     private AppelEnCours appelEnCours1;
     private AppelEnCours appelEnCours2;
+    private ArrayList<String> historique;
+    private ContactsEnregistres contactsEnregistres1;
+    private ContactsEnregistres contactsEnregistres2;
     private JPanel paneParentTelephone1;
     private JPanel paneParentTelephone2;
+  //  private Historique historique = new Historique();
     private List<String> numerosCrees = new ArrayList<>();
     
+    private List<Appel> listeAppels = new ArrayList<>();
+    private String numeroCible; // Ajout de la variable numeroCible
     private static Clip clip;
     int dureeAppel = 0;
+    
     private Timer timer;
     private String numero;
     private List<Contact> listeContactsTelephone1;
@@ -120,6 +134,7 @@ public class CreerTelephone extends javax.swing.JFrame implements IAppel {
             
             // Ajouter le numéro de téléphone à la liste des numéros créés
             numerosCrees.add(numero);
+            
         } else {
             JOptionPane.showMessageDialog(this, "Le numéro de téléphone doit respecter le format spécifié.", "Erreur de validation", JOptionPane.ERROR_MESSAGE);
         }
@@ -215,57 +230,105 @@ public class CreerTelephone extends javax.swing.JFrame implements IAppel {
         timer = new Timer(1000, (ActionEvent e) -> {
             dureeAppel++;
             if (dureeAppel < 10) {
-                appelEnCours1.setTemps("Durée: 00:0" + String.valueOf(dureeAppel));
-                appelEnCours2.setTemps("Durée: 00:0" + String.valueOf(dureeAppel));
+                 appelEntrant.setNumeroEntrant("Appel Entrant \n" + telephone1.getTitle().substring(5));
+                appelSortant.setNumeroSortant("Appel Sortant\n" + telephone2.getTitle().substring(5));
+                appelEnCours1.setTemps("00:0" + String.valueOf(dureeAppel));
+                appelEnCours2.setTemps("00:0" + String.valueOf(dureeAppel));
             } else {
-                appelEnCours1.setTemps("Durée: 00:" + String.valueOf(dureeAppel));
-                appelEnCours2.setTemps("Durée: 00:" + String.valueOf(dureeAppel));
+                appelEntrant.setNumeroEntrant("Appel Entrant" + telephone2.getTitle().substring(5));
+                appelSortant.setNumeroSortant("Appel Sortant" + telephone1.getTitle().substring(5));
+                appelEnCours1.setTemps("00:" + String.valueOf(dureeAppel));
+                appelEnCours2.setTemps("00:" + String.valueOf(dureeAppel));
             }
         });
         
         timer.start();
     }
-
     @Override
     public void onClickCouper(String phoneSourceTitle) {
-        clip.close();
-        telephone1.setContentPane(paneParentTelephone1);
-        telephone2.setContentPane(paneParentTelephone2);
-        
-        if (timer != null && timer.isRunning()) {
+   clip.close();
+    timer.stop();
+    telephone1.setContentPane(paneParentTelephone1);
+    telephone2.setContentPane(paneParentTelephone2);
+    
+    if (timer != null && timer.isRunning()) {
+        timer.stop();
+    }
+   
+    double tauxParSeconde = 0.2; // Par exemple, un taux de 0.2 euro par seconde
+    double coutAppel = dureeAppel * tauxParSeconde;
+    // FenetreTelephone.addHistory(String.valueOf(dureeAppel), "sortant", phoneSourceTitle, coutAppel);
+    
+    DecimalFormat df = new DecimalFormat("#.##");
+    String coutFormate = df.format(coutAppel);
+    if (timer != null && timer.isRunning()) {
             timer.stop();
         }
-        
-        JOptionPane.showMessageDialog(this, "Appel terminé. Durée: " + dureeAppel + " secondes", "Fin d'appel", JOptionPane.INFORMATION_MESSAGE);
-    }
+       
+
+       
+       JOptionPane.showMessageDialog(this, "Appel terminé. Durée: " + dureeAppel + " secondes.", "FInd de l'appel",JOptionPane.INFORMATION_MESSAGE);
+
+    addHistory("00:" + String.valueOf(dureeAppel), "Sortant", telephone2.getTitle().substring(5), coutAppel);
+
+   }
+    public void addHistory(String text, String type, String numero, double cout) {
+    String phoneSourceTitle = telephone1.getTitle().substring(5);
+    String otherPhoneTitle = telephone2.getTitle().substring(5);
+    String contact = type.equals("Sortant") ? otherPhoneTitle : phoneSourceTitle;
+    historique = new ArrayList<>();
+    historique.add("Appel " + type + " duree " + text + "\ncontact " + contact + ", coût : " + cout * 100
+            + " GNF " + LocalDate.now() + "\n________________");
+}
 
     @Override
-   public void onClickAppeler(String phoneSourceTitle) {
-        if (telephone2.getTitle().equals(phoneSourceTitle)) {
-            appelEntrant.setNumeroEntrant("Appel Entrant" + telephone2.getTitle().substring(5));
-            appelSortant.setNumeroSortant("Appel Sortant" + telephone1.getTitle().substring(5));
-            CreerTelephone.playSound("sone.wav");
+    public void onClickAppeler(String phoneSourceNumber, String numeroCible) {
+    // Vérifier si le numéro cible correspond exactement au titre du téléphone
+     // Vérifier si le numéro cible fait partie des numéros créés
+     if (numerosCrees.contains(numeroCible)) {
+        Appel appel = new Appel();
+        if (telephone2 != null && telephone2.getTitle().contains(numeroCible)) {
+            appelEntrant.setNumeroEntrant("Appel Entrant" + phoneSourceNumber);
+            appelSortant.setNumeroSortant("Appel Sortant" + numeroCible );
             appelEntrant.setListener(this);
             appelSortant.setListener(this);
-            telephone2.setContentPane(appelSortant);
+            telephone1.setContentPane(appelSortant); // Inverser l'affichage sur telephone1
+            telephone1.setVisible(true);
+            telephone2.setContentPane(appelEntrant); // Inverser l'affichage sur telephone2
             telephone2.setVisible(true);
-            telephone1.setContentPane(appelEntrant);
+        } else if (telephone1 != null && telephone1.getTitle().contains(numeroCible)) {
+            appelEntrant.setNumeroEntrant("Appel Entrant \n" + phoneSourceNumber);
+            appelSortant.setNumeroSortant("Appel Sortant\n" +numeroCible );
+            appelEntrant.setListener(this);
+            appelSortant.setListener(this);
+            telephone2.setContentPane(appelSortant); // Inverser l'affichage sur telephone2
+            telephone2.setVisible(true);
+            telephone1.setContentPane(appelEntrant); // Inverser l'affichage sur telephone1
             telephone1.setVisible(true);
         } else {
-            appelEntrant.setNumeroEntrant("Appel Entrant" + telephone1.getTitle().substring(5));
-            appelSortant.setNumeroSortant("Appel Sortant" + telephone2.getTitle().substring(5));
-            appelEntrant.setListener(this);
-            appelSortant.setListener(this);
-            telephone1.setContentPane(appelSortant);
-            telephone1.setVisible(true);
-            telephone2.setContentPane(appelEntrant);
-            telephone2.setVisible(true);
+            JOptionPane.showMessageDialog(this, "Une erreur s'est produite lors de l'appel.", "Erreur", JOptionPane.ERROR_MESSAGE);
+            return;
         }
-    } 
+        listeAppels.add(appel);
+         CreerTelephone.playSound("sone.wav");
+    } else {
+        JOptionPane.showMessageDialog(this, "Le numéro cible n'existe pas parmi les téléphones créés.", "Erreur", JOptionPane.ERROR_MESSAGE);
+    }
+}
+
+
 
     @Override
     public void onClickFermer(String phoneSourceTitle) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    clip.close();
+    telephone1.setContentPane(paneParentTelephone1);
+    telephone2.setContentPane(paneParentTelephone2);
+    
+      /*  if (phoneSourceTitle.equals(telephone1.getTitle())) {
+            telephone1.setContentPane(paneParentTelephone1);
+        } else { 
+            telephone2.setContentPane(paneParentTelephone2);
+        }*/
     }
     
      public static void playSound(String soundFilePath) {
@@ -278,5 +341,46 @@ public class CreerTelephone extends javax.swing.JFrame implements IAppel {
             e.printStackTrace();
         }
     }
+
+    @Override
+    public void onClickAfficherContacts(String phoneSourceTitle) {
+        if (telephone1.getTitle().equals(phoneSourceTitle)) {
+            contactsEnregistres1 = new ContactsEnregistres();
+            contactsEnregistres1.setListener(this);
+            telephone1.setContentPane(contactsEnregistres1);
+            contactsEnregistres1.setVisible(true);
+        } else {
+            contactsEnregistres2 = new ContactsEnregistres();
+            contactsEnregistres2.setListener(this);
+            telephone2.setContentPane(contactsEnregistres2);
+        }
+    }
+
+    @Override
+    public void Historique(String phoneSourceTitle) {
+         
+    /*// Calcul du coût de l'appel
+    double tauxParSeconde = 0.2; // Par exemple, un taux de 0.05 euro par seconde
+    double coutAppel = dureeAppel * tauxParSeconde;
+    String coutFormate = String.format("%.2f GNF", coutAppel);
+
+    // Afficher l'appel dans l'historique avec les informations nécessaires
+    if (telephone2.getTitle().equals(phoneSourceTitle)) {
+        // Si c'est le téléphone 2 qui a initié l'appel
+        historique.setTable(telephone2.getTitle().substring(5), date.toString(), "Sortant", coutFormate);
+    } else {
+        // Si c'est le téléphone 1 qui a initié l'appel
+        historique.setTable(telephone1.getTitle().substring(5), date.toString(), "Entrant", coutFormate);
+    }
+
+    // Afficher les détails de l'appel sur les téléphones
+    // (à ajouter selon votre logique de gestion des composants d'interface utilisateur)
+
+    System.out.println("ça marche"); // Message de débogage
+}*/}
+    
 }
+
+
+
 

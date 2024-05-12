@@ -35,6 +35,8 @@ public class AppelEntrant extends javax.swing.JPanel {
         numeroEntrant = new javax.swing.JLabel();
         repondre = new javax.swing.JButton();
 
+        setBackground(new java.awt.Color(0, 0, 0));
+
         couper.setBackground(new java.awt.Color(255, 51, 51));
         couper.setText("Couper");
         couper.addActionListener(new java.awt.event.ActionListener() {
@@ -42,6 +44,10 @@ public class AppelEntrant extends javax.swing.JPanel {
                 couperActionPerformed(evt);
             }
         });
+
+        numeroEntrant.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
+        numeroEntrant.setForeground(new java.awt.Color(255, 255, 255));
+        numeroEntrant.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
 
         repondre.setBackground(new java.awt.Color(102, 255, 0));
         repondre.setText("Repondre");
@@ -55,16 +61,15 @@ public class AppelEntrant extends javax.swing.JPanel {
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(33, 33, 33)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
                 .addComponent(repondre, javax.swing.GroupLayout.DEFAULT_SIZE, 121, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(couper, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(57, 57, 57))
+                .addGap(80, 80, 80))
             .addGroup(layout.createSequentialGroup()
-                .addGap(46, 46, 46)
-                .addComponent(numeroEntrant, javax.swing.GroupLayout.PREFERRED_SIZE, 234, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(numeroEntrant, javax.swing.GroupLayout.PREFERRED_SIZE, 280, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -81,7 +86,7 @@ public class AppelEntrant extends javax.swing.JPanel {
 
     private void couperActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_couperActionPerformed
         // TODO add your handling code here:
-        this.listener.onClickCouper(((JFrame) SwingUtilities.getWindowAncestor(this)).getTitle());
+        this.listener.onClickFermer(((JFrame) SwingUtilities.getWindowAncestor(this)).getTitle());
     }//GEN-LAST:event_couperActionPerformed
 
     private void repondreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_repondreActionPerformed

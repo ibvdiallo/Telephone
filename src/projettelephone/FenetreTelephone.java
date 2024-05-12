@@ -5,38 +5,115 @@
  */
 package projettelephone;
 
+import java.awt.Color;
+import java.awt.FlowLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Date;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JTextArea;
 import javax.swing.SwingConstants;
-
-/**
- *
- * @author ibrahim
- */
+import javax.swing.SwingUtilities;
+import javax.swing.Timer;
+import static javax.swing.WindowConstants.DISPOSE_ON_CLOSE;
 
 
+        public class FenetreTelephone extends javax.swing.JFrame {
+            private AppelEntrant appelEntrant = new AppelEntrant();    
+            private AppelSortant appelSortant = new AppelSortant();
+            private String numero;
+            private static IAppel listener;
+            LocalDateTime now = LocalDateTime.now();
+             private ArrayList<String> historique;
+             public final ArrayList<Appel> listeAppels = new ArrayList<>();
+            //DateTimeFormatter formatter = DateTimeFormatter.ofPattern("EEEE dd MMMM yyyy, HH'h' mm' '");
+          //  String formattedDateTime = now.format(formatter);
+             
+            private  final ArrayList<Contact> ListeContacts = new ArrayList<>();
+             private ArrayList<String> messageBox;
+            private String nom;
+            
+            public FenetreTelephone(Date date) {
+            initComponents();
+            this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+             this.historique = new ArrayList<>(10);  
+            // Créer un Timer pour mettre à jour l'heure toutes les secondes
+            Timer timer = new Timer(1000, new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    updateTime();
+                }
+            });
+            timer.start();
+        }
 
-public class FenetreTelephone extends javax.swing.JFrame {
-    private AppelEntrant appelEntrant = new AppelEntrant();    
-    private AppelSortant appelSortant = new AppelSortant();
-    String numero;
-    private static IAppel listener;
-    LocalDateTime now = LocalDateTime.now();
-    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("EEEE dd MMMM yyyy, HH'h' mm' '");
-    String formattedDateTime = now.format(formatter);
-
-
-    public FenetreTelephone(Date date) {
-       initComponents();
-       vtime.setText(formattedDateTime);
-       vtime.setHorizontalAlignment(SwingConstants.CENTER);
-       
+        // Méthode pour mettre à jour l'heure
+        private void updateTime() {
+            // Obtenir la date et l'heure actuelles
+            LocalDateTime maintenant = LocalDateTime.now();
+            // Formater la date et l'heure
+             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("EEEE dd MMMM yyyy, HH'h' mm' 'ss' '");
+            String formattedDateTime = formatter.format(maintenant);
+            // Mettre à jour le texte de l'heure dans le JLabel vtime
+            vtime.setText(formattedDateTime);
+            // Centrer le texte horizontalement dans le JLabel vtime
+            vtime.setHorizontalAlignment(SwingConstants.CENTER);
+        }
+      public String getNumero() {
+        return numero;
     }
-   
 
+  
+    public String getNom() {
+        return nom;
+    }
+     public void setNumero(String numero) {
+        this.numero = numero;
+    }
+
+
+
+    public void setNom(String nom) {
+        this.nom = nom;
+    }
+    
+    
+     public  void addHistory(int text, String type, String numero, double cout) {
+        historique.add("Appel "+ type +" duree  "+ text +"\ncontact " + numero + ", coût : " + cout * 100
+                        + " GNF " + LocalDate.now() + "\n________________");
+    }
+    public void showHistory() {
+        JFrame history = new JFrame("Historique");
+        history.setSize(400, 400);
+        history.setDefaultCloseOperation(DISPOSE_ON_CLOSE); // Pour pas que ça ferme le reste
+        history.setAlwaysOnTop(true); // Toujours au top
+        history.setLocationRelativeTo(null); // Conteneur c'est le panel parent
+        history.setResizable(false);
+        
+        JPanel rr = (JPanel) history.getContentPane();
+        rr.setLayout(new FlowLayout());
+        rr.setBackground(Color.WHITE);
+        
+        for(String story : historique)
+        {
+            JTextArea text = new JTextArea(story);
+            text.setEditable(false);
+            rr.add(text);
+        }
+        history.setVisible(true);
+    }
+    
+    
+    
+    
  
     /**
      * This method is called from within the constructor to initialize the form.
@@ -181,6 +258,11 @@ public class FenetreTelephone extends javax.swing.JFrame {
 
         btnEnregistrer.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         btnEnregistrer.setText("Enregister");
+        btnEnregistrer.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEnregistrerActionPerformed(evt);
+            }
+        });
 
         btnAppeler.setBackground(new java.awt.Color(102, 255, 102));
         btnAppeler.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
@@ -218,9 +300,15 @@ public class FenetreTelephone extends javax.swing.JFrame {
 
         btnContacts1.setFont(new java.awt.Font("Tahoma", 1, 10)); // NOI18N
         btnContacts1.setText("Contacts");
+        btnContacts1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnContacts1ActionPerformed(evt);
+            }
+        });
 
-        vtime.setBackground(new java.awt.Color(204, 204, 255));
+        vtime.setBackground(new java.awt.Color(102, 102, 255));
         vtime.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        vtime.setForeground(new java.awt.Color(255, 255, 255));
         vtime.setOpaque(true);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -277,8 +365,8 @@ public class FenetreTelephone extends javax.swing.JFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(7, 7, 7)
-                .addComponent(vtime, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(vtime, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(resultat, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -330,11 +418,13 @@ public class FenetreTelephone extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnHistorique1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHistorique1ActionPerformed
-        // TODO add your handling code here:
+//      this.listener.Historique(((JFrame) SwingUtilities.getWindowAncestor(this)).getTitle());
+     showHistory();
     }//GEN-LAST:event_btnHistorique1ActionPerformed
 
     private void btnClavier1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClavier1ActionPerformed
         // TODO add your handling code here:
+     
     }//GEN-LAST:event_btnClavier1ActionPerformed
 
     private void btnEffacerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEffacerActionPerformed
@@ -345,9 +435,11 @@ public class FenetreTelephone extends javax.swing.JFrame {
     private void btnAppelerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAppelerActionPerformed
         // TODO add your handling code here:
         //interfaceAppel.appeler();
-        if (!resultat.getText().isEmpty()) {
-            listener.onClickAppeler(this.getTitle());
-        }
+    String numeroCible = resultat.getText(); // Récupérer le numéro cible depuis le champ resultat
+    if (!numeroCible.isEmpty()) {
+        listener.onClickAppeler(this.getTitle(), numeroCible);
+    }
+
     }//GEN-LAST:event_btnAppelerActionPerformed
 
     private void nguessActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nguessActionPerformed
@@ -417,6 +509,34 @@ public class FenetreTelephone extends javax.swing.JFrame {
     private void resultatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_resultatActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_resultatActionPerformed
+
+    private void btnEnregistrerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEnregistrerActionPerformed
+        // TODO add your handling code here:
+        String monContact = JOptionPane.showInputDialog(rootPane,"Nom Contact","Creation d'un Contact",JOptionPane.QUESTION_MESSAGE);
+        
+        Contact c = new Contact(monContact,resultat.getText());
+        ListeContacts.add(c);
+        System.out.println(ListeContacts);
+    }//GEN-LAST:event_btnEnregistrerActionPerformed
+
+    private void btnContacts1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnContacts1ActionPerformed
+        // TODO add your handling code here:
+      if(ListeContacts.isEmpty()){
+          JOptionPane.showMessageDialog(rootPane,"Aucun contact");
+          
+      }else {
+          AfficheContact affiche =new AfficheContact(getNom(),getNumero());
+          affiche.setVisible(true);
+          affiche.setTitle(this.getNumero());
+          JTextArea textAreaContact = affiche.getTextAreaContact();
+          
+          StringBuilder textAffichage = new StringBuilder();
+          for (Contact c : ListeContacts){
+              textAffichage.append("Nom: ").append(c.getNom()).append("\nNumero : ").append(c.getNumero()).append("\n\n");
+          }
+          textAreaContact.setText(textAffichage.toString());
+      }
+    }//GEN-LAST:event_btnContacts1ActionPerformed
 
     public static void setListener(IAppel listener) {
         FenetreTelephone.listener = listener;

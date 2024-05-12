@@ -5,11 +5,15 @@
  */
 package projettelephone;
 
+import javax.swing.JFrame;
+import javax.swing.SwingUtilities;
+
 /**
  *
  * @author Eclipse
  */
 public class ContactsEnregistres extends javax.swing.JPanel {
+    private IAppel listener;
 
     /**
      * Creates new form ContactsEnregistres
@@ -60,6 +64,11 @@ public class ContactsEnregistres extends javax.swing.JPanel {
         jScrollPane1.setViewportView(tableContacts);
 
         btnFermer.setText("Fermer");
+        btnFermer.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnFermerActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -80,10 +89,19 @@ public class ContactsEnregistres extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btnFermerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFermerActionPerformed
+        // TODO add your handling code here:
+        listener.onClickFermer(((JFrame) SwingUtilities.getWindowAncestor(this)).getTitle());
+    }//GEN-LAST:event_btnFermerActionPerformed
 
+    public void setListener(IAppel listener) {
+        this.listener = listener;
+    }
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnFermer;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tableContacts;
     // End of variables declaration//GEN-END:variables
+
 }
