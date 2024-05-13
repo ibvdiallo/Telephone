@@ -5,8 +5,9 @@
  */
 package projettelephone;
 
-import javax.swing.JPanel;
-import javax.swing.table.DefaultTableModel;
+import java.util.List;
+import javax.swing.DefaultListModel;
+import javax.swing.ListModel;
 
 /**
  *
@@ -14,12 +15,27 @@ import javax.swing.table.DefaultTableModel;
  */
 public class Historique extends javax.swing.JPanel {
     private IAppel listener;
-    JPanel paneParentTelephone1;
+    private List<String> historique;
+    private DefaultListModel<String> model = new DefaultListModel<String>();
+    
     /**
      * Creates new form Historique
      */
     public Historique() {
         initComponents();
+    }
+    
+    private void afficherListe() {
+        historique.forEach(item -> {
+            model.addElement(item);
+        });
+        
+        historiqueAppel.setModel(model);
+    }
+    
+    public void setListHistorique(List<String> historique) {
+        this.historique=historique;
+        afficherListe();
     }
 
     /**
@@ -31,34 +47,22 @@ public class Historique extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel1 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        table = new javax.swing.JTable();
+        historiqueAppel = new javax.swing.JList<>();
+        jLabel1 = new javax.swing.JLabel();
+        btnFermer = new javax.swing.JButton();
 
-        jLabel1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jScrollPane1.setViewportView(historiqueAppel);
+
+        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel1.setText("Historique");
 
-        table.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String [] {
-                "tel", "Dates", "types", "cout"
-            }
-        ) {
-            Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
-            };
-
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
+        btnFermer.setText("Clavier");
+        btnFermer.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnFermerActionPerformed(evt);
             }
         });
-        jScrollPane1.setViewportView(table);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -67,43 +71,42 @@ public class Historique extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(45, 45, 45)
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 294, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 375, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(15, Short.MAX_VALUE))
+                        .addComponent(jScrollPane1))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(99, 99, 99)
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 97, Short.MAX_VALUE)))
+                .addContainerGap())
+            .addGroup(layout.createSequentialGroup()
+                .addGap(134, 134, 134)
+                .addComponent(btnFermer)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(33, 33, 33)
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap()
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 24, Short.MAX_VALUE)
+                .addComponent(btnFermer)
+                .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
-     
-       public void setListener(IAppel listener) {
+
+    private void btnFermerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFermerActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnFermerActionPerformed
+    public void setListener(IAppel listener) {
         this.listener = listener;
     }
-    public void setTable(String tel, String date, String type, String cout) {
-    // Assurez-vous que vous avez des données à insérer
-    if (tel != null && date != null && type != null && cout != null) {
-        // Créez un tableau d'objets pour représenter une ligne de données
-        Object[] rowData = {tel, date, type, cout};
-        
-        // Ajoutez la ligne de données à la table
-        DefaultTableModel model = (DefaultTableModel) table.getModel();
-        model.addRow(rowData);
-    }
-}
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnFermer;
+    private javax.swing.JList<String> historiqueAppel;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable table;
     // End of variables declaration//GEN-END:variables
 }

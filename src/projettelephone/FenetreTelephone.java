@@ -84,36 +84,6 @@ import static javax.swing.WindowConstants.DISPOSE_ON_CLOSE;
     public void setNom(String nom) {
         this.nom = nom;
     }
-    
-    
-     public  void addHistory(int text, String type, String numero, double cout) {
-        historique.add("Appel "+ type +" duree  "+ text +"\ncontact " + numero + ", coût : " + cout * 100
-                        + " GNF " + LocalDate.now() + "\n________________");
-    }
-    public void showHistory() {
-        JFrame history = new JFrame("Historique");
-        history.setSize(400, 400);
-        history.setDefaultCloseOperation(DISPOSE_ON_CLOSE); // Pour pas que ça ferme le reste
-        history.setAlwaysOnTop(true); // Toujours au top
-        history.setLocationRelativeTo(null); // Conteneur c'est le panel parent
-        history.setResizable(false);
-        
-        JPanel rr = (JPanel) history.getContentPane();
-        rr.setLayout(new FlowLayout());
-        rr.setBackground(Color.WHITE);
-        
-        for(String story : historique)
-        {
-            JTextArea text = new JTextArea(story);
-            text.setEditable(false);
-            rr.add(text);
-        }
-        history.setVisible(true);
-    }
-    
-    
-    
-    
  
     /**
      * This method is called from within the constructor to initialize the form.
@@ -418,8 +388,7 @@ import static javax.swing.WindowConstants.DISPOSE_ON_CLOSE;
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnHistorique1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHistorique1ActionPerformed
-//      this.listener.Historique(((JFrame) SwingUtilities.getWindowAncestor(this)).getTitle());
-     showHistory();
+        listener.onClickHistorique(this.getTitle());
     }//GEN-LAST:event_btnHistorique1ActionPerformed
 
     private void btnClavier1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClavier1ActionPerformed
