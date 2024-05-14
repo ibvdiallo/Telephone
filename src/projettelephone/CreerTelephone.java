@@ -27,13 +27,14 @@ public class CreerTelephone extends javax.swing.JFrame implements IAppel {
     private JFrame telephone1 = null, telephone2 = null;
     private AppelEntrant appelEntrant = new AppelEntrant();    
     private AppelSortant appelSortant = new AppelSortant();
-    private InfoSortant infoSortant = new InfoSortant();
-    private InfoEntrant infoEntrant = new InfoEntrant();
     private AppelEnCours appelEnCours1;
     private AppelEnCours appelEnCours2;
-    private Historique historique = new Historique();
+    private Historique historique1 = new Historique();
+    private Historique historique2 = new Historique();
     private List<String> historiqueTelephone1 = new ArrayList<>();
     private List<String> historiqueTelephone2 = new ArrayList<>();
+    private List<Contact> listeContacts1 = new ArrayList<>();
+    private List<Contact> listeContacts2 = new ArrayList<>();
     private ContactsEnregistres contactsEnregistres1;
     private ContactsEnregistres contactsEnregistres2;
     private JPanel paneParentTelephone1;
@@ -126,7 +127,7 @@ public class CreerTelephone extends javax.swing.JFrame implements IAppel {
         // TODO add your handling code here:
             if (telephone1 == null) {
         String numero = txtNumero.getText();
-        if (validerNumero(numero)) {
+        //if (validerNumero(numero)) {
             telephone1 = new FenetreTelephone(date);
             FenetreTelephone.setListener(this);
             telephone1.setVisible(true);
@@ -138,14 +139,14 @@ public class CreerTelephone extends javax.swing.JFrame implements IAppel {
             // Ajouter le numéro de téléphone à la liste des numéros créés
             numerosCrees.add(numero);
             
-        } else {
-            JOptionPane.showMessageDialog(this, "Le numéro de téléphone doit respecter le format spécifié.", "Erreur de validation", JOptionPane.ERROR_MESSAGE);
-        }
+        //} else {
+        //    JOptionPane.showMessageDialog(this, "Le numéro de téléphone doit respecter le format spécifié.", "Erreur de validation", JOptionPane.ERROR_MESSAGE);
+        //}
     } else {
         // Vérifier si telephone2 est null et créer un nouveau téléphone
         if (telephone2 == null) {
             String numero = txtNumero.getText();
-            if (validerNumero(numero) && !numero.equals(this.numero)) {
+            if (/*validerNumero(numero) &&*/ !numero.equals(this.numero)) {
                 telephone2 = new FenetreTelephone(date);
                 FenetreTelephone.setListener(this);
                 telephone2.setVisible(true);
@@ -254,32 +255,23 @@ public class CreerTelephone extends javax.swing.JFrame implements IAppel {
         telephone1.setContentPane(paneParentTelephone1);
         telephone2.setContentPane(paneParentTelephone2);
 
-        if (timer != null && timer.isRunning()) {
-            timer.stop();
-        }
-
         double tauxParSeconde = 0.2; // Par exemple, un taux de 0.2 euro par seconde
         double coutAppel = dureeAppel * tauxParSeconde;
         // FenetreTelephone.addHistory(String.valueOf(dureeAppel), "sortant", phoneSourceTitle, coutAppel);
 
         DecimalFormat df = new DecimalFormat("#.##");
         String coutFormate = df.format(coutAppel);
-        if (timer != null && timer.isRunning()) {
-            timer.stop();
-        }
-        
         
         JOptionPane.showMessageDialog(this, "Appel terminé. Durée: " + dureeAppel + " secondes.", "FInd de l'appel",JOptionPane.INFORMATION_MESSAGE);
-        if (telephone1.getTitle().equals(phoneSourceTitle) && isTelephone1EmitCall) {
-            historiqueTelephone1.add("00:" + String.valueOf(dureeAppel) + "Sortant" + telephone2.getTitle().substring(5) + coutAppel);
-            historiqueTelephone2.add("00:" + String.valueOf(dureeAppel) + "Sortant" + telephone2.getTitle().substring(5) + coutAppel);
-
+        if (isTelephone1EmitCall) {
+            historiqueTelephone1.add("00:" + String.valueOf(dureeAppel) + " Sortant " + telephone2.getTitle().substring(5) + " " + coutAppel);
+            historiqueTelephone2.add("00:" + String.valueOf(dureeAppel) + " Entrant " + telephone1.getTitle().substring(5) + " Cout : 0");
         } else {
-            
-            historiqueTelephone1.add("00:" + String.valueOf(dureeAppel) + "Sortant" + telephone2.getTitle().substring(5) + coutAppel);
-            historiqueTelephone2.add("00:" + String.valueOf(dureeAppel) + "Sortant" + telephone2.getTitle().substring(5) + coutAppel);
+            historiqueTelephone2.add("00:" + String.valueOf(dureeAppel) + " Sortant " + telephone1.getTitle().substring(5) + " " + coutAppel);
+            historiqueTelephone1.add("00:" + String.valueOf(dureeAppel) + " Entrant " + telephone2.getTitle().substring(5) + " Cout : 0");
         }
-
+        
+        dureeAppel = 0;
    }
     public void addHistory(String text, String type, String numero, double cout) {
         String phoneSourceTitle = telephone1.getTitle().substring(5);
@@ -297,8 +289,20 @@ public class CreerTelephone extends javax.swing.JFrame implements IAppel {
      if (numerosCrees.contains(numeroCible)) {
         //Appel appel = new Appel();
         if (telephone2 != null && telephone2.getTitle().contains(numeroCible)) {
-            appelEntrant.setNumeroEntrant("Appel Entrant" + phoneSourceNumber);
-            appelSortant.setNumeroSortant("Appel Sortant" + numeroCible );
+            for (Contact contact : listeContacts1) {
+                if (contact.getNumero().equals(numeroCible)) {
+                    numeroCible = contact.getNom();
+                }
+            }
+            
+            for (Contact contact : listeContacts2) {
+                if (contact.getNumero().equals(phoneSourceNumber)) {
+                    phoneSourceNumber = contact.getNom();
+                }
+            }
+            
+            appelEntrant.setNumeroEntrant("Appel Entrant \n" + phoneSourceNumber);
+            appelSortant.setNumeroSortant("Appel Sortant \n" + numeroCible );
             appelEntrant.setListener(this);
             appelSortant.setListener(this);
             telephone1.setContentPane(appelSortant); // Inverser l'affichage sur telephone1
@@ -307,8 +311,20 @@ public class CreerTelephone extends javax.swing.JFrame implements IAppel {
             telephone2.setVisible(true);
             this.isTelephone1EmitCall = true;
         } else if (telephone1 != null && telephone1.getTitle().contains(numeroCible)) {
+            for (Contact contact : listeContacts2) {
+                if (contact.getNumero().equals(numeroCible)) {
+                    numeroCible = contact.getNom();
+                }
+            }
+            
+            for (Contact contact : listeContacts1) {
+                if (contact.getNumero().equals(phoneSourceNumber)) {
+                    phoneSourceNumber = contact.getNom();
+                }
+            }
+            
             appelEntrant.setNumeroEntrant("Appel Entrant \n" + phoneSourceNumber);
-            appelSortant.setNumeroSortant("Appel Sortant\n" +numeroCible );
+            appelSortant.setNumeroSortant("Appel Sortant \n" +numeroCible );
             appelEntrant.setListener(this);
             appelSortant.setListener(this);
             telephone2.setContentPane(appelSortant); // Inverser l'affichage sur telephone2
@@ -332,9 +348,9 @@ public class CreerTelephone extends javax.swing.JFrame implements IAppel {
 
     @Override
     public void onClickFermer(String phoneSourceTitle) {
-    clip.close();
-    telephone1.setContentPane(paneParentTelephone1);
-    telephone2.setContentPane(paneParentTelephone2);
+        clip.close();
+        telephone1.setContentPane(paneParentTelephone1);
+        telephone2.setContentPane(paneParentTelephone2);
     
       /*  if (phoneSourceTitle.equals(telephone1.getTitle())) {
             telephone1.setContentPane(paneParentTelephone1);
@@ -359,31 +375,54 @@ public class CreerTelephone extends javax.swing.JFrame implements IAppel {
         if (telephone1.getTitle().equals(phoneSourceTitle)) {
             contactsEnregistres1 = new ContactsEnregistres();
             contactsEnregistres1.setListener(this);
+            paneParentTelephone1 = (JPanel) telephone1.getContentPane();
+            contactsEnregistres1.setListContacts(listeContacts1);
             telephone1.setContentPane(contactsEnregistres1);
-            contactsEnregistres1.setVisible(true);
+            telephone1.setVisible(true);
         } else {
             contactsEnregistres2 = new ContactsEnregistres();
             contactsEnregistres2.setListener(this);
+            paneParentTelephone2 = (JPanel) telephone2.getContentPane();
+            contactsEnregistres2.setListContacts(listeContacts2);
             telephone2.setContentPane(contactsEnregistres2);
+            telephone2.setVisible(true);
         }
     }
 
     @Override
     public void onClickHistorique(String phoneSourceTitle) {
         if (telephone1.getTitle().equals(phoneSourceTitle)) {
-            historiqueTelephone1.add("Vega");
-            historique.setListHistorique(historiqueTelephone1);
-            historique.setListener(this);
-            telephone1.setContentPane(historique);
+            historique1.setListHistorique(historiqueTelephone1);
+            historique1.setListener(this);
+            paneParentTelephone1 = (JPanel) telephone1.getContentPane();
+            telephone1.setContentPane(historique1);
             telephone1.setVisible(true);
         } else {
-            historique.setListHistorique(historiqueTelephone2);
-            historique.setListener(this);
-            telephone2.setContentPane(historique);
+            historique2.setListHistorique(historiqueTelephone2);
+            historique2.setListener(this);
+            paneParentTelephone2 = (JPanel) telephone2.getContentPane();
+            telephone2.setContentPane(historique2);
             telephone2.setVisible(true);
         }
     }
     
+    @Override
+    public void onClickFermerHistorique(String phoneSourceTitle) {
+        if (telephone1.getTitle().equals(phoneSourceTitle)) {
+            telephone1.setContentPane(paneParentTelephone1);
+        } else {
+            telephone2.setContentPane(paneParentTelephone2);
+        }
+    }
+    
+    @Override
+    public void onClickEnregistrerContact(String phoneSourceTitle, Contact contact) {
+        if (telephone1.getTitle().equals(phoneSourceTitle)) {
+            listeContacts1.add(contact);
+        } else {
+            listeContacts2.add(contact);
+        }
+    }
 }
 
 

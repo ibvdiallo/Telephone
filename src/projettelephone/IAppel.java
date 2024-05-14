@@ -18,4 +18,6 @@ public interface IAppel {
     public void onClickFermer(String phoneSourceTitle);
     public void onClickAfficherContacts(String phoneSourceTitle);
     public void onClickHistorique(String phoneSourceTitle);
+    public void onClickFermerHistorique(String phoneSourceTitle);
+    public void onClickEnregistrerContact(String phoneSourceTitle, Contact contact);
 }

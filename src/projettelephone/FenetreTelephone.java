@@ -32,13 +32,12 @@ import static javax.swing.WindowConstants.DISPOSE_ON_CLOSE;
             private String numero;
             private static IAppel listener;
             LocalDateTime now = LocalDateTime.now();
-             private ArrayList<String> historique;
-             public final ArrayList<Appel> listeAppels = new ArrayList<>();
+            private ArrayList<String> historique;
+            public final ArrayList<Appel> listeAppels = new ArrayList<>();
             //DateTimeFormatter formatter = DateTimeFormatter.ofPattern("EEEE dd MMMM yyyy, HH'h' mm' '");
-          //  String formattedDateTime = now.format(formatter);
+            //  String formattedDateTime = now.format(formatter);
              
-            private  final ArrayList<Contact> ListeContacts = new ArrayList<>();
-             private ArrayList<String> messageBox;
+            private ArrayList<String> messageBox;
             private String nom;
             
             public FenetreTelephone(Date date) {
@@ -406,7 +405,7 @@ import static javax.swing.WindowConstants.DISPOSE_ON_CLOSE;
         //interfaceAppel.appeler();
     String numeroCible = resultat.getText(); // Récupérer le numéro cible depuis le champ resultat
     if (!numeroCible.isEmpty()) {
-        listener.onClickAppeler(this.getTitle(), numeroCible);
+        listener.onClickAppeler(this.getTitle().substring(6), numeroCible);
     }
 
     }//GEN-LAST:event_btnAppelerActionPerformed
@@ -482,29 +481,30 @@ import static javax.swing.WindowConstants.DISPOSE_ON_CLOSE;
     private void btnEnregistrerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEnregistrerActionPerformed
         // TODO add your handling code here:
         String monContact = JOptionPane.showInputDialog(rootPane,"Nom Contact","Creation d'un Contact",JOptionPane.QUESTION_MESSAGE);
-        
-        Contact c = new Contact(monContact,resultat.getText());
-        ListeContacts.add(c);
-        System.out.println(ListeContacts);
+        Contact contact = new Contact(resultat.getText(), monContact);
+        listener.onClickEnregistrerContact(this.getTitle(), contact);
     }//GEN-LAST:event_btnEnregistrerActionPerformed
 
     private void btnContacts1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnContacts1ActionPerformed
         // TODO add your handling code here:
-      if(ListeContacts.isEmpty()){
-          JOptionPane.showMessageDialog(rootPane,"Aucun contact");
+        /*
+        if(ListeContacts.isEmpty()){
+            JOptionPane.showMessageDialog(rootPane,"Aucun contact");
           
-      }else {
-          AfficheContact affiche =new AfficheContact(getNom(),getNumero());
-          affiche.setVisible(true);
-          affiche.setTitle(this.getNumero());
-          JTextArea textAreaContact = affiche.getTextAreaContact();
-          
-          StringBuilder textAffichage = new StringBuilder();
-          for (Contact c : ListeContacts){
-              textAffichage.append("Nom: ").append(c.getNom()).append("\nNumero : ").append(c.getNumero()).append("\n\n");
-          }
-          textAreaContact.setText(textAffichage.toString());
-      }
+        } else {
+            AfficheContact affiche =new AfficheContact(getNom(),getNumero());
+            affiche.setVisible(true);
+            affiche.setTitle(this.getNumero());
+            JTextArea textAreaContact = affiche.getTextAreaContact();
+
+            StringBuilder textAffichage = new StringBuilder();
+            for (Contact c : ListeContacts){
+                textAffichage.append("Nom: ").append(c.getNom()).append("\nNumero : ").append(c.getNumero()).append("\n\n");
+            }
+            textAreaContact.setText(textAffichage.toString());
+        }
+        */
+        listener.onClickAfficherContacts(this.getTitle());
     }//GEN-LAST:event_btnContacts1ActionPerformed
 
     public static void setListener(IAppel listener) {

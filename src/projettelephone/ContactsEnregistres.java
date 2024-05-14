@@ -5,6 +5,8 @@
  */
 package projettelephone;
 
+import java.util.List;
+import javax.swing.DefaultListModel;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
@@ -14,12 +16,28 @@ import javax.swing.SwingUtilities;
  */
 public class ContactsEnregistres extends javax.swing.JPanel {
     private IAppel listener;
+    private List<Contact> contacts;
+    private DefaultListModel<String> model = new DefaultListModel<String>();
 
     /**
      * Creates new form ContactsEnregistres
      */
     public ContactsEnregistres() {
         initComponents();
+    }
+    
+    private void afficherListe() {
+        model = new DefaultListModel<String>();
+        contacts.forEach(item -> {
+            model.addElement("Nom: " + item.getNom() + " Numero: " + item.getNumero());
+        });
+        
+        listeContacts.setModel(model);
+    }
+    
+    public void setListContacts(List<Contact> contacts) {
+        this.contacts = contacts;
+        afficherListe();
     }
 
     /**
@@ -31,37 +49,9 @@ public class ContactsEnregistres extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jScrollPane1 = new javax.swing.JScrollPane();
-        tableContacts = new javax.swing.JTable();
         btnFermer = new javax.swing.JButton();
-
-        tableContacts.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null}
-            },
-            new String [] {
-                "Nom", "Numero"
-            }
-        ) {
-            Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class
-            };
-            boolean[] canEdit = new boolean [] {
-                false, false
-            };
-
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
-            }
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
-        jScrollPane1.setViewportView(tableContacts);
+        jScrollPane2 = new javax.swing.JScrollPane();
+        listeContacts = new javax.swing.JList<>();
 
         btnFermer.setText("Fermer");
         btnFermer.addActionListener(new java.awt.event.ActionListener() {
@@ -70,20 +60,22 @@ public class ContactsEnregistres extends javax.swing.JPanel {
             }
         });
 
+        jScrollPane2.setViewportView(listeContacts);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 305, javax.swing.GroupLayout.PREFERRED_SIZE)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(61, 71, Short.MAX_VALUE)
                 .addComponent(btnFermer, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(64, 64, 64))
+            .addComponent(jScrollPane2)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 326, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 326, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnFermer, javax.swing.GroupLayout.DEFAULT_SIZE, 39, Short.MAX_VALUE))
         );
@@ -91,7 +83,7 @@ public class ContactsEnregistres extends javax.swing.JPanel {
 
     private void btnFermerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFermerActionPerformed
         // TODO add your handling code here:
-        listener.onClickFermer(((JFrame) SwingUtilities.getWindowAncestor(this)).getTitle());
+        listener.onClickFermerHistorique(((JFrame) SwingUtilities.getWindowAncestor(this)).getTitle());
     }//GEN-LAST:event_btnFermerActionPerformed
 
     public void setListener(IAppel listener) {
@@ -100,8 +92,8 @@ public class ContactsEnregistres extends javax.swing.JPanel {
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnFermer;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable tableContacts;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JList<String> listeContacts;
     // End of variables declaration//GEN-END:variables
 
 }

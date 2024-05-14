@@ -7,10 +7,12 @@ package projettelephone;
 
 import java.util.List;
 import javax.swing.DefaultListModel;
-import javax.swing.ListModel;
+import javax.swing.JFrame;
+    import javax.swing.ListModel;
+    import javax.swing.SwingUtilities;
 
-/**
- *
+    /**
+     *
  * @author ibrahim
  */
 public class Historique extends javax.swing.JPanel {
@@ -26,6 +28,7 @@ public class Historique extends javax.swing.JPanel {
     }
     
     private void afficherListe() {
+        model = new DefaultListModel<String>();
         historique.forEach(item -> {
             model.addElement(item);
         });
@@ -52,6 +55,12 @@ public class Historique extends javax.swing.JPanel {
         jLabel1 = new javax.swing.JLabel();
         btnFermer = new javax.swing.JButton();
 
+        historiqueAppel.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        historiqueAppel.setModel(new javax.swing.AbstractListModel<String>() {
+            String[] strings = { "Duree Numero Cout" };
+            public int getSize() { return strings.length; }
+            public String getElementAt(int i) { return strings[i]; }
+        });
         jScrollPane1.setViewportView(historiqueAppel);
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
@@ -88,9 +97,9 @@ public class Historique extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 24, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 36, Short.MAX_VALUE)
                 .addComponent(btnFermer)
                 .addContainerGap())
         );
@@ -98,6 +107,7 @@ public class Historique extends javax.swing.JPanel {
 
     private void btnFermerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFermerActionPerformed
         // TODO add your handling code here:
+        listener.onClickFermer(((JFrame) SwingUtilities.getWindowAncestor(this)).getTitle());
     }//GEN-LAST:event_btnFermerActionPerformed
     public void setListener(IAppel listener) {
         this.listener = listener;
